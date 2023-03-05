@@ -4,14 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class ReadUser extends StatelessWidget {
-   ReadUser({Key? key}) : super(key: key);
+  ReadUser({Key? key}) : super(key: key);
 
-
-  final CollectionReference ref = FirebaseFirestore.instance.collection('users');
+  final CollectionReference ref =
+      FirebaseFirestore.instance.collection('users');
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('Read User'),
@@ -20,7 +19,7 @@ class ReadUser extends StatelessWidget {
       floatingActionButton: ElevatedButton(
         onPressed: () {
           final docUser =
-              FirebaseFirestore.instance.collection('users').doc('POII');
+              FirebaseFirestore.instance.collection('users').doc('lak');
           docUser.update({
             'name': 'Eng',
           });
@@ -47,26 +46,55 @@ class ReadUser extends StatelessWidget {
               return ListView.builder(
                 itemCount: users.length,
                 itemBuilder: (context, index) => ListTile(
-                  onTap: (){
+                  visualDensity: VisualDensity.comfortable,
+                  isThreeLine: true,
+                  subtitleTextStyle: const TextStyle(
+                      fontSize: 20, fontWeight: FontWeight.bold),
+                  onTap: () {
                     // Update Data ------------------------
                     // ref.doc(users[index].id.toString()).update({
                     //   'name' : 'NEW'
                     // });
                     // Delete Data -------------------------
-                    ref.doc(users[index].id.toString()).delete();
+                    // ref.doc(users[index].id.toString()).delete();
                   },
-                  title: Text(users[index].name),
+                  title: Text(
+                    users[index].name,
+                    style: const TextStyle(fontSize: 30),
+                  ),
                   leading: CircleAvatar(
-                    child: Text('${users[index].age}'),
+                    radius: 28,
+                    child: Text('${users[index].age}',
+                        style: const TextStyle(fontSize: 25)),
                   ),
                   subtitle: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        DateFormat.yMMMMd('en_US')
-                            .format(users[index].birthday),
+                      Text(DateFormat.yMMMMd('en_US')
+                          .format(users[index].birthday)),
+                      SizedBox(
+                        width: 80,
+                        child: Text(users[index].id,
+                            overflow: TextOverflow.ellipsis),
+                      )
+                    ],
+                  ),
+                  trailing: Column(
+                    children: [
+                      Expanded(
+                        child: IconButton(
+                          onPressed: () {},
+                          icon: const Icon(Icons.delete,
+                              size: 30, color: Colors.red),
+                        ),
                       ),
-                      Text(users[index].id)
+                      Expanded(
+                        child: IconButton(
+                          onPressed: () {},
+                          icon: const Icon(Icons.edit,
+                              size: 30, color: Colors.blue),
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -80,7 +108,7 @@ class ReadUser extends StatelessWidget {
     );
   }
 
-// no need update
+// no need update ----------------------------------<
   Widget buildUser(Users users) => ListTile(
         leading: CircleAvatar(child: Text('${users.age}')),
         title: Text(users.name),
@@ -93,7 +121,7 @@ class ReadUser extends StatelessWidget {
           ],
         ),
       );
-// no need update
+// no need update ---------------------------------->
 
   // Read User data
   Stream<List<Users>> readUser() => FirebaseFirestore.instance
